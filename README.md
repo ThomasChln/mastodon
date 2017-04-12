@@ -20,7 +20,7 @@ Login and post a status, an image, or a ggplot
 ```r
 library(mastodon)
 token = login('https://framapiaf.org/', 'user@mail.org', 'password')
-post_status(token, 'Status text.')
+post_status(token, 'Status text')
 post_media(token, 'Image caption', file = '/home/user/file.png')
 post_ggplot(token, 'Mastodon instances and users', ggplot_instances_info())
 ```
