@@ -1,17 +1,24 @@
 # Mastodon
 
-## Installation
+## Installation in R
 
 Use the **devtools** R package to install from Github:
 ```r
 devtools::install_github('ThomasChln/mastodon')
-library(mastodon)
+```
+
+### Docker
+
+A docker image with the package installed is also available
+```r
+docker run -it thomaschln/mastodon
 ```
 
 ## Usage
 
 Login and post a status, an image, or a ggplot
 ```r
+library(mastodon)
 token = login('https://framapiaf.org/', 'user@mail.org', 'password')
 post_status(token, 'Status text.')
 post_media(token, 'Image caption', file = '/home/user/file.png')
