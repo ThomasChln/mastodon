@@ -9,8 +9,7 @@ ggplot_instances_info = function(url = 'https://instances.mastodon.xyz/',
   subtitle = paste('Top', n_instances, 'instances (among', nrow(df_info),
     'serving', sum(df_info$users), 'users) -',
     format(Sys.time(), tz = 'UTC',  usetz = TRUE))
-  caption = paste('@thchln@framapiaf.org\n@milvus@mastodon.cloud\ndata from',
-    url)
+  caption = paste('@milvus@mastodon.cloud\ndata from', url)
 
   df_info %>%
     subset(rank(-users) <= n_instances) %>%

@@ -2,8 +2,8 @@ Package:mastodon
 Title: R based Mastodon client
 Description: Provides an interface to the Mastodon web API.
 Version: 1.0.0
-Author: Thomas Charlon <@thchln@framapiaf.org>
-Maintainer: Thomas Charlon <@thchln@framapiaf.org>
+Author: Thomas Charlon <>
+Maintainer: Thomas Charlon <>
 Imports:
     httr,
     magrittr
