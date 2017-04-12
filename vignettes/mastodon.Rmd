@@ -1,0 +1,9 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Mastodon users}
+-->
+
+# Get info on instances
+
+head(instances_info())
+ggplot_instances_info()

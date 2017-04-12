@@ -1,0 +1,19 @@
+Package:mastodon
+Title: R based Mastodon client
+Description: Provides an interface to the Mastodon web API.
+Version: 1.0.0
+Author: Thomas Charlon <@thchln@framapiaf.org>
+Maintainer: Thomas Charlon <@thchln@framapiaf.org>
+Imports:
+    httr,
+    magrittr
+Depends:
+    R (>= 2.15)
+Suggests:
+    ggplot2,
+    ggthemes,
+    jsonlite,
+    knitr,
+    scales
+VignetteBuilder: knitr
+License: GPL-3
