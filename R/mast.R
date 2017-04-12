@@ -19,7 +19,7 @@ login = function(instance, user, pass) {
   r = post(instance, 'oauth/token', client_id = client$client_id,
     client_secret = client$client_secret, grant_type = 'password',
     username = user, password = pass, scope = 'write')
-  if (is.null(token$access_token)) stop('Login failed')
+  if (is.null(r$access_token)) stop('Login failed')
 
   append(r, list(instance = instance))
 }
