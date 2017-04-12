@@ -1,8 +1,10 @@
+#' @export
 instances_info = function(url = 'https://instances.mastodon.xyz/') {
   GET(paste0(url, 'instances.json')) %>% content(as = 'text') %>%
     jsonlite::fromJSON()
 }
 
+#' @export
 ggplot_instances_info = function(url = 'https://instances.mastodon.xyz/',
   df_info = instances_info(url), n_instances = 20) {
   library(ggplot2)

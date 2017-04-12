@@ -8,22 +8,21 @@ all: check clean
 doc.pdf:
 	R CMD Rd2pdf -o doc.pdf .
 
-build:
+build: doc
 	cd ..;\
 	R CMD build --no-manual $(PKGSRC)
-
-build-cran:
-	cd ..;\
-	R CMD build $(PKGSRC)
 
 install: build
 	cd ..;\
 	R CMD INSTALL $(PKGNAME)_$(PKGVERS).tar.gz
 
-check: build-cran
+check: build
 	cd ..;\
 	R CMD check $(PKGNAME)_$(PKGVERS).tar.gz --as-cran
 
 clean:
 	cd ..;\
 	$(RM) -r $(PKGNAME).Rcheck/
+
+doc:
+	R -e "devtools::document()"

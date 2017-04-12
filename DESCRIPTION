@@ -1,9 +1,9 @@
-Package:mastodon
+Package: mastodon
 Title: R based Mastodon client
 Description: Provides an interface to the Mastodon web API.
 Version: 1.0.0
-Author: Thomas Charlon <>
-Maintainer: Thomas Charlon <>
+Author: Thomas Charlon <x@x>
+Maintainer: Thomas Charlon <x@x>
 Imports:
     httr,
     magrittr
@@ -17,3 +17,4 @@ Suggests:
     scales
 VignetteBuilder: knitr
 License: GPL-3
+RoxygenNote: 6.0.1

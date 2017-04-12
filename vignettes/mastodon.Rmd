@@ -3,6 +3,8 @@
 %\VignetteIndexEntry{Mastodon users}
 -->
 
+library(mastodon)
+
 # Get info on instances
 
 head(instances_info())
