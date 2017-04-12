@@ -7,7 +7,7 @@ Use the **devtools** R package to install from Github:
 devtools::install_github('ThomasChln/mastodon')
 ```
 
-### Docker
+## Docker
 
 A docker image with the package installed is also available
 ```r
