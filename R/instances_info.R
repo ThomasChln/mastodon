@@ -35,7 +35,8 @@ toots_by_hours = function(df_toots) {
 }
 
 #' @export
-ggplot_toots_by_hours = function(df_toots) {
+ggplot_toots_by_hours = function(df_toots, instance = NA,
+  remove_times_ratio = .1) {
   library(ggplot2)
   # remove times with very low count
   df_toots %<>% subset(n_toots > max(n_toots) / 10)
@@ -45,34 +46,38 @@ ggplot_toots_by_hours = function(df_toots) {
     ylim(0, max(df_toots$n_toots) + max(df_toots$n_toots) / 6) +
     labs(x = 'Hour', y = 'Number of toots',
       title = 'Participation within all instances of Mastodon',
-      caption = 'Source : Public timeline of mastodon.social')
+      caption = paste('Source :', instance))
 }
 
 #' @export
-toots_by_instances = function(df_toots) {
+toots_by_instances = function(df_toots, remove_times_ratio = .1) {
   df_toots$hours = gsub(':.*', '', df_toots$created_at)
   df_toots$instance = gsub('https://|/.*', '', df_toots$url)
-  df_toots %>% split(.[c('hours', 'instance')]) %>% sapply(., nrow) %>%
+  df_instances = df_toots %>% split(.[c('hours', 'instance')]) %>% sapply(., nrow) %>%
     data.frame(hours = gsub('[.].*', '', names(.)) %>% lubridate::ymd_h(),
-      instances = gsub('.*[.]', '', names(.)), n_toots = .)
+      instances = gsub('^[^.]*[.]', '', names(.)), n_toots = .)
+
+  # remove times with very low count
+  df_toots %<>% toots_by_hours %>% subset(n_toots > max(n_toots) * .1)
+  df_instances %>% subset(hours %in% unique(df_toots$hours))
 }
 
 #' @export
-ggplot_toots_by_instances = function(df_toots, n_top_instances = 6) {
+ggplot_toots_by_instances = function(df_toots, instance = NA,
+  n_top_instances = 6) {
   library(ggplot2)
-  # remove times with very low count
-  df_toots %<>% subset(n_toots > max(n_toots) / 10)
 
-  top_instances = df_toots %>% split(.$instance) %>%
+  top_instances = df_toots %>% split(.$instances) %>%
     sapply(function(i) sum(i$n_toots)) %>% sort(TRUE) %>% names %>%
     head(n_top_instances)
-  df_toots %<>% subset(instance %in% top_instances)
+  df_toots %<>% subset(instances %in% top_instances)
 
   ggplot(df_toots, aes(hours, n_toots, color = instances, group = instances)) +
     geom_line(size = 1) +
     ylim(0, max(df_toots$n_toots) + max(df_toots$n_toots) / 6) +
     theme(legend.position = 'bottom') +
     labs(x = 'Hour', y = 'Number of toots', color = 'Instance',
-      title = 'Participation by instances',
-      caption = 'Source : Public timeline of mastodon.social')
+      title = paste('Participation by top', n_top_instances, 'instances'),
+      caption = paste('Source :', instance))
+
 }
