@@ -78,11 +78,13 @@ Participation by hours
 df_toots = get_timeline(token, 'fed', n = 2e4)
 toots_by_hours(df_toots) %>% ggplot_toots_by_hours(token$instance)
 ```
+![](https://framapiaf.org/media/b3Mn26afJtRD9w1_qqs)
 
 Participation of top 6 instances
 ```r
 toots_by_instances(df_toots) %>% ggplot_toots_by_instances(token$instance)
 ```
+![](https://framapiaf.org/media/Ds6kdUdPNYFvJGhQRHw)
 
 ## Acknowledgments
 
