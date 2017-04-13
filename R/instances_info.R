@@ -27,3 +27,44 @@ ggplot_instances_info = function(url = 'https://instances.mastodon.xyz/',
         axis.ticks.y = element_line(size = 0),
         panel.grid.major.y = element_line(size = 0))
 }
+
+#' @export
+toots_by_hours = function(df_toots) {
+  df_toots %>% split(gsub(':.*', '', .$created_at)) %>% sapply(., nrow) %>%
+    data.frame(hours = names(.) %>% lubridate::ymd_h(), n_toots = .)
+}
+
+#' @export
+ggplot_toots_by_hours = function(df_toots) {
+  ggplot(df_toots, aes(hours, n_toots)) +
+    geom_line(color = 'red', size = 1, group = 1) +
+    ylim(0, max(df_toots$n_toots) + max(df_toots$n_toots) / 6) +
+    labs(x = 'Hour', y = 'Number of toots',
+      title = 'Participation within all instances of Mastodon',
+      caption = 'Source : Public timeline of mastodon.social')
+}
+
+#' @export
+toots_by_instances = function(df_toots) {
+  df_toots$hours = gsub(':.*', '', df_toots$created_at)
+  df_toots$instance = gsub('https://|/.*', '', df_toots$url)
+  df_toots %>% split(.[c('hours', 'instance')]) %>% sapply(., nrow) %>%
+    data.frame(hours = gsub('[.].*', '', names(.)) %>% lubridate::ymd_h(),
+      instances = gsub('.*[.]', '', names(.)), n_toots = .)
+}
+
+#' @export
+ggplot_toots_by_instances = function(df_toots, n_top_instances = 6) {
+  top_instances = df_toots %>% split(.$instance) %>%
+    sapply(function(i) sum(i$n_toots)) %>% sort(TRUE) %>% names %>%
+    head(n_top_instances)
+  df_toots %<>% subset(instance %in% top_instances)
+
+  ggplot(df_toots, aes(hours, n_toots, color = instances, group = instances)) +
+    geom_line(size = 1) +
+    ylim(0, max(df_toots$n_toots) + max(df_toots$n_toots) / 6) +
+    theme(legend.position = 'bottom') +
+    labs(x = 'Hour', y = 'Number of toots', color = 'Instance',
+      title = 'Participation by instances',
+      caption = 'Source : Public timeline of mastodon.social')
+}
