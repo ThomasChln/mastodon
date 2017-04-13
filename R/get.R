@@ -60,5 +60,5 @@ search_username = function(token, username, limit = 40) {
 #' @export
 search = function(token, query, local = FALSE) {
   paste0('search?q=', query, if (!local) '&resolve') %>%
-    get_api(token, .) %>% lapply(
+    get_api(token, .)
 }
