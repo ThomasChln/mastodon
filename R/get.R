@@ -8,12 +8,13 @@ list_to_df = function(l) {
   df
 }
 
-get_api = function(token, type, id = '', local = FALSE) {
+get_api = function(token, type, id = '', local = FALSE, as_df = FALSE) {
   if (local) id %<>% paste0(if (grepl('[?]', .)) '&' else '?', 'local')
-  paste0('api/v1/', type, '/', id) %>% 
+  r = paste0('api/v1/', type, '/', id) %>% 
     api_call(GET, token$instance, .,
-      add_headers(Authorization = paste('Bearer', token$access_token))) %>%
-    list_to_df
+      add_headers(Authorization = paste('Bearer', token$access_token)))
+
+  if (as_df) list_to_df(r) else r
 }
 
 #' @export
@@ -27,7 +28,7 @@ loop_timelines = function(n, id, max_id, ..., n_per_request = 20,
 
   for (i in seq_len(n_loops)) {
     df = paste0(id, if (!is.null(max_id)) paste0('?max_id=', max_id)) %>%
-      get_api(id = ., ...) %>% rbind(df, .)
+      get_api(id = ., ..., as_df = TRUE) %>% rbind(df, .)
 
     if (i == n_loops || nrow(df) < n_per_request * i) return(head(df, n))
     max_id = tail(df$id, 1)
@@ -54,7 +55,7 @@ get_account = function(token, id, ...) get_api(token, 'accounts', id, ...)
 #' @export
 search_username = function(token, username, limit = 40) {
   paste0('search?q=', username, '&limit=', limit) %>%
-    get_account(token, .)
+    get_account(token, ., as_df = TRUE)
 }
 
 #' @export
