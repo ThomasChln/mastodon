@@ -36,6 +36,7 @@ toots_by_hours = function(df_toots) {
 
 #' @export
 ggplot_toots_by_hours = function(df_toots) {
+  library(ggplot2)
   ggplot(df_toots, aes(hours, n_toots)) +
     geom_line(color = 'red', size = 1, group = 1) +
     ylim(0, max(df_toots$n_toots) + max(df_toots$n_toots) / 6) +
@@ -55,6 +56,7 @@ toots_by_instances = function(df_toots) {
 
 #' @export
 ggplot_toots_by_instances = function(df_toots, n_top_instances = 6) {
+  library(ggplot2)
   top_instances = df_toots %>% split(.$instance) %>%
     sapply(function(i) sum(i$n_toots)) %>% sort(TRUE) %>% names %>%
     head(n_top_instances)
