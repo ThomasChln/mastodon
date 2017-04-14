@@ -75,16 +75,18 @@ ggplot_instances_info()
 
 Participation by hours
 ```r
-df_toots = get_timeline(token, 'fed', n = 2e4)
+# Use a large server
+token = login('https://mastodon.xyz/', 'user@mail.org', 'password')
+df_toots = get_timeline(token, 'fed', n = 7e4)
 toots_by_hours(df_toots) %>% ggplot_toots_by_hours(token$instance)
 ```
-![](https://framapiaf.org/media/b3Mn26afJtRD9w1_qqs)
+![](https://framapiaf.org/media/gPGdhk2WHa-znyR-bds)
 
 Participation of top 6 instances
 ```r
 toots_by_instances(df_toots) %>% ggplot_toots_by_instances(token$instance)
 ```
-![](https://framapiaf.org/media/Ds6kdUdPNYFvJGhQRHw)
+![](https://framapiaf.org/media/JBmR1YZcmX0sAnCVzzI)
 
 ## Acknowledgments
 

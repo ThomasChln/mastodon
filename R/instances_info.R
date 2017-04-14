@@ -39,7 +39,7 @@ ggplot_toots_by_hours = function(df_toots, instance = NA,
   remove_times_ratio = .1) {
   library(ggplot2)
   # remove times with very low count
-  df_toots %<>% subset(n_toots > max(n_toots) / 10)
+  df_toots %<>% subset(n_toots > max(n_toots) * remove_times_ratio)
 
   ggplot(df_toots, aes(hours, n_toots)) +
     geom_line(color = 'red', size = 1, group = 1) +
@@ -53,13 +53,16 @@ ggplot_toots_by_hours = function(df_toots, instance = NA,
 toots_by_instances = function(df_toots, remove_times_ratio = .1) {
   df_toots$hours = gsub(':.*', '', df_toots$created_at)
   df_toots$instance = gsub('https://|/.*', '', df_toots$url)
-  df_instances = df_toots %>% split(.[c('hours', 'instance')]) %>% sapply(., nrow) %>%
-    data.frame(hours = gsub('[.].*', '', names(.)) %>% lubridate::ymd_h(),
-      instances = gsub('^[^.]*[.]', '', names(.)), n_toots = .)
 
   # remove times with very low count
-  df_toots %<>% toots_by_hours %>% subset(n_toots > max(n_toots) * .1)
-  df_instances %>% subset(hours %in% unique(df_toots$hours))
+  valid_hours = df_toots %>% toots_by_hours %>%
+    subset(n_toots > max(n_toots) * remove_times_ratio) %$% unique(hours)
+
+  df_toots[c('hours', 'instance')] %>%
+    split(.[c('hours', 'instance')]) %>% sapply(nrow) %>%
+    data.frame(hours = gsub('[.].*', '', names(.)) %>% lubridate::ymd_h(),
+      instances = gsub('^[^.]*[.]', '', names(.)), n_toots = .) %>%
+    subset(hours %in% valid_hours)
 }
 
 #' @export
