@@ -88,7 +88,7 @@ toots_by_instances(df_toots) %>% ggplot_toots_by_instances(token$instance)
 ```
 ![](https://framapiaf.org/media/JBmR1YZcmX0sAnCVzzI)
 
-## Acknowledgments
+## Acknowledgements
 
 * Login, posts, and users per instances plot: [pastebin script](https://pastebin.com/XBiJmbNV) by [@milvus@mastodon.cloud](https://mastodon.cloud/@milvus)
 * Participation per instances plots: [HTML-Rmd vignette](http://vintagedata.org/mastodon/cultural_genesis_1.html) by [@Dorialexander@mastodon.social](https://mastodon.social/@Dorialexander) 
